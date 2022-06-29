@@ -58,6 +58,18 @@ public:
 		objMomentum = objMomentum * 0.01;
 	}
 
+	void turn(double angle)
+	{
+		objAngle = objAngle + angle;
+		if ( objAngle > M_PI*2 ){
+			objAngle = objAngle - M_PI*2;
+		}
+		else if ( objAngle < 0 ){
+			objAngle = objAngle + M_PI*2;
+		}
+
+	}
+
 	void push(double pushAngle, double pushForce)
 	{
 		objAngle = pushAngle;
@@ -108,9 +120,9 @@ int main()
 	SDL_Joystick *joy = NULL;
 
 	static const char *nameMusic = "music/Stardrive.mp3";
-	static const char *nameBackground = "graphics/Aurora.jpg";
-	static const char *nameBox = "graphics/RTS_Crate.png";
-	static const char *nameShip = "graphics/Ship_A.png";
+//	static const char *nameBackground = "graphics/Aurora.jpg";
+	static const char *nameBox = "graphics/kenney_spaceshooterextension/PNG/Sprites/Rocket parts/spaceRocketParts_013.png";
+	static const char *nameShip = "graphics/kenney_spaceshooterextension/PNG/Sprites/Ships/spaceShips_001.png";
 
 	static SDL_Texture *textureBackground = NULL;
 	static SDL_Texture *textureShip = NULL;
@@ -154,7 +166,7 @@ int main()
 	gWindow = SDL_CreateWindow("Cave", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 1024, 768, SDL_WINDOW_OPENGL);
 	gRenderer = SDL_CreateRenderer(gWindow, -1, SDL_RENDERER_ACCELERATED);
 
-	textureBackground = loadTexture(nameBackground);
+//	textureBackground = loadTexture(nameBackground);
 	textureShip = loadTexture(nameShip);
 	textureBox = loadTexture(nameBox);
 
@@ -196,8 +208,26 @@ int main()
 			printf("Exiting.\n");
 		}
 
+		if (keys[SDL_SCANCODE_A])
+		{
+			ship->turn(-0.01);
+		}
+
+		if (keys[SDL_SCANCODE_D])
+		{
+			ship->turn(+0.01);
+		}
+
+
+
+        /* Select the color for drawing. It is set to red here. */
+        SDL_SetRenderDrawColor(gRenderer, 65, 65, 125, 255);
+
+        /* Clear the entire screen to our selected color. */
+        SDL_RenderClear(gRenderer);
+
 		//Render background
-		SDL_RenderCopy(gRenderer, textureBackground, NULL, NULL);
+//		SDL_RenderCopy(gRenderer, textureBackground, NULL, NULL);
 
 		ship->move();
 		box->move();
